@@ -33,11 +33,11 @@ app.delete('/api/preguntas/:id', (req, res) => preguntaController.deletePregunta
 
 // Routes for Misiones
 
-app.get("/api/mision", misionController.getAllMision);
-app.post("/api/mision", misionController.createMision);
-app.get("/api/mision/:id", misionController.getMisionById);
-app.put("/api/mision/:id", misionController.updateMision);
-app.delete("/api/mision/soft/:id", misionController.deleteSoftMision);
+app.get("/api/mision", (req, res) => misionController.getAllMision(req, res));
+app.post("/api/mision", (req, res) => misionController.createMision(req, res));
+app.get("/api/mision/:id", (req, res) => misionController.getMisionById(req, res));
+app.put("/api/mision/:id", (req, res) => misionController.updateMision(req, res));
+app.delete("/api/mision/soft/:id", (req, res) => misionController.deleteSoftMision(req, res));
 
 
 // Server setup

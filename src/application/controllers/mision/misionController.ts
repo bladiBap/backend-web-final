@@ -11,8 +11,6 @@ export class MisionController {
     private misionRepository = new MisionRepositoryImpl();
 
     async getAllMision(req: Request, res: Response): Promise<void> {
-        console.log('getAllMision');
-        console.log(this.misionRepository);
         const misionClass = new GetAllMision(this.misionRepository);
         const misiones = await misionClass.execute();
         res.json(misiones);
