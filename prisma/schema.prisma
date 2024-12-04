@@ -13,6 +13,76 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model mision {
+  id              Int      @id @default(autoincrement())
+  nombre          String
+  descripcion     String
+  objetivo        Int
+  por_puntos      Boolean
+  recompensa      Int
+  createdAT       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  usuariomision   usuariomision[]
+}
+
+model logro {
+  id              Int      @id @default(autoincrement())
+  nombre          String
+  descripcion     String
+  objetivo        Int
+  recompensa      Int
+  por_puntos      Boolean
+  createdAT       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  usuariologro    usuariologro[]
+}
+
+model usuario {
+  id              Int      @id @default(autoincrement())
+  nombre          String
+  apellido        String
+  correo          String
+  contrasena      String
+  Role            Role     @default(USER)
+  createdAT       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  usuariomision   usuariomision[]
+  usuariologro    usuariologro[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model usuariomision {
+  id              Int      @id @default(autoincrement())
+  fk_usuario       Int
+  fk_mision        Int
+  completada      Boolean
+  fecha_completada DateTime
+  createdAT       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  usuario         usuario  @relation(fields: [fk_usuario], references: [id])
+  mision          mision   @relation(fields: [fk_mision], references: [id])
+}
+
+model usuariologro {
+  id              Int      @id @default(autoincrement())
+  fk_usuario       Int
+  fk_logro         Int
+  completado      Boolean
+  fecha_completado DateTime
+  createdAT       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  usuario         usuario  @relation(fields: [fk_usuario], references: [id])
+  logro           logro    @relation(fields: [fk_logro], references: [id])
+}
 model Cuestionario {
   id          Int       @id @default(autoincrement())
   titulo      String

@@ -5,9 +5,14 @@
   "type": "commonjs",
   "imports": {
     "#src/*": "./src/*",
-    "#utils/*": "./src/utils/*",
-    "#validators/*": "./src/validators/*",
-    "#controllers/*": "./src/controllers/*"
+    "#controllers/*": "./src/application/controllers",
+    "#routes/*": "./src/aplication/routes",
+    "#config/*": "./src/config",
+    "#entities/*": "./src/core/domain/entities",
+    "#usecases/*": "./src/core/domain/use-cases",
+    "#repositories/*": "./src/core/repositories",
+    "#database/*": "./src/infrastructure/database",
+    "#irepositories/*": "./src/infrastructure/repositories"
   },
   "scripts": {
     "start": "node dist/config/app.js",
