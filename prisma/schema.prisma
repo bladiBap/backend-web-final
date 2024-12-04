@@ -12,3 +12,26 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Cuestionario {
+  id          Int       @id @default(autoincrement())
+  titulo      String
+  descripcion String
+  preguntas   Pregunta[]
+}
+
+model Pregunta {
+  id              Int          @id @default(autoincrement())
+  enunciado       String
+  cuestionario_id Int
+  cuestionario    Cuestionario  @relation(fields: [cuestionario_id], references: [id], onDelete: Cascade)
+  opciones        Opcion[]
+}
+
+model Opcion {
+  id          Int       @id @default(autoincrement())
+  texto       String
+  es_correcta Boolean
+  pregunta_id Int
+  pregunta    Pregunta  @relation(fields: [pregunta_id], references: [id], onDelete: Cascade)
+}

@@ -1,7 +1,7 @@
 import express from "express";
 
-import { TaskController } from "../application/controllers/taskController";
-import { UserController } from "../application/controllers/userController";
+import { CuestionarioController } from "../application/controllers/cuestionarios/cuestionarioController";
+import { PreguntaController } from "../application/controllers/cuestionarios/preguntaController";
 const cors = require('cors');
 
 const app = express();
@@ -11,25 +11,22 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
+const cuestionarioController = new CuestionarioController();
+const preguntaController = new PreguntaController();
 
-// Routes
-const taskController = new TaskController();
-const userController = new UserController();
+// Routes for Cuestionarios
+app.get('/api/cuestionarios', (req, res) => cuestionarioController.getAllCuestionarios(req, res));
+app.post('/api/cuestionarios', (req, res) => cuestionarioController.createCuestionario(req, res));
+app.get('/api/cuestionarios/:id', (req, res) => cuestionarioController.getCuestionarioById(req, res));
+app.put('/api/cuestionarios/:id', (req, res) => cuestionarioController.updateCuestionario(req, res));
+app.delete('/api/cuestionarios/:id', (req, res) => cuestionarioController.deleteCuestionario(req, res));
 
-// Routes for tasks
-app.get('/api/tasks', (req, res) => taskController.getAllTasks(req, res));
-app.post('/api/tasks', (req, res) => taskController.createTask(req, res));
-app.get('/api/tasks/:id', (req, res) => taskController.getTaskById(req, res));
-app.put('/api/tasks/:id', (req, res) => taskController.updateTask(req, res));
-app.delete('/api/tasks/:id', (req, res) => taskController.deleteTask(req, res));
-app.post('/api/tasks/assign', (req, res) => taskController.assignUserToTask(req, res));
-
-// Routes for users
-app.get('/api/users', (req, res) => userController.getAllUsers(req, res));
-app.post('/api/users', (req, res) => userController.createUser(req, res));
-app.get('/api/users/:id', (req, res) => userController.getUserById(req, res));
-app.put('/api/users/:id', (req, res) => userController.updateUser(req, res));
-app.delete('/api/users/:id', (req, res) => userController.deleteUser(req, res));
+// Routes for Preguntas
+app.get('/api/preguntas', (req, res) => preguntaController.getAllPreguntas(req, res));
+app.post('/api/preguntas', (req, res) => preguntaController.createPregunta(req, res));
+app.get('/api/preguntas/:id', (req, res) => preguntaController.getPreguntaById(req, res));
+app.put('/api/preguntas/:id', (req, res) => preguntaController.updatePregunta(req, res));
+app.delete('/api/preguntas/:id', (req, res) => preguntaController.deletePregunta(req, res));
 
 // Server setup
 app.listen(PORT, () => {
