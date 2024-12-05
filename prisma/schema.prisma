@@ -140,8 +140,6 @@ model Powerup {
 
   nombre      String
   descripcion String
-  createdAT   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 
   nivel          nivel            @relation(fields: [fk_nivel], references: [id])
   mision         mision[]
@@ -152,9 +150,7 @@ model Topico {
   id           Int            @id @default(autoincrement())
   nombre       String
   descripcion  String
-  createdAT    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  Cuestionario Cuestionario[]
+  cuestionarios Cuestionario[]
 }
 
 model usuariopowerup {

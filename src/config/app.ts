@@ -6,6 +6,9 @@ import { PreguntaController } from "../application/controllers/cuestionarios/pre
 import { MisionController } from "../application/controllers/mision/misionController";
 import { UsuarioController } from "../application/controllers/usuario/usuarioController";
 import { LogroController } from "../application/controllers/logro/logroController";
+import { NivelController } from "../application/controllers/nivel/nivelController";
+import { TopicoController } from "../application/controllers/topicos/topicoController";
+import { PowerUpController } from "../application/controllers/powerup/powerupController";
 
 const cors = require('cors');
 
@@ -25,6 +28,10 @@ const preguntaController = new PreguntaController();
 const misionController = new MisionController();
 const usuarioController = new UsuarioController();
 const logroController = new LogroController();
+
+const nivelController = new NivelController();
+const topicoController = new TopicoController();
+const powerupController = new PowerUpController();
 
 // Routes for Cuestionarios
 app.get('/api/cuestionarios', (req, res) => cuestionarioController.getAllCuestionarios(req, res));
@@ -48,24 +55,27 @@ app.get("/api/mision/:id", (req, res) => misionController.getMisionById(req, res
 app.put("/api/mision/:id", (req, res) => misionController.updateMision(req, res));
 app.delete("/api/mision/soft/:id", (req, res) => misionController.deleteSoftMision(req, res));
 
-// Routes for Usuarios
+// Routes for Nivel
+app.get('/api/niveles', (req, res) => nivelController.getAllNiveles(req, res));
+app.post('/api/niveles', (req, res) => nivelController.createNivel(req, res));
+app.get('/api/niveles/:id', (req, res) => nivelController.getNivelById(req, res));
+app.put('/api/niveles/:id', (req, res) => nivelController.updateNivel(req, res));
+app.delete('/api/niveles/:id', (req, res) => nivelController.deleteNivel(req, res));
 
-app.get("/api/usuario", (req, res) => usuarioController.getAllUsuario(req, res));
-app.post("/api/usuario", (req, res) => usuarioController.createUsuario(req, res));
-app.get("/api/usuario/id/:id", (req, res) => usuarioController.getUsuarioById(req, res));
-app.put("/api/usuario/:id", (req, res) => usuarioController.updateUsuario(req, res));
-app.delete("/api/usuario/:id", (req, res) => usuarioController.deleteUsuario(req, res));
-app.post("/api/usuario/login", (req, res) => usuarioController.login(req, res));
-app.post("/api/usuario/logout", (req, res) => usuarioController.logout(req, res));
-app.get("/api/usuario/me", (req, res) => usuarioController.getUserByToken(req, res));
+// Routes for Topico
+app.get('/api/topicos', (req, res) => topicoController.getAllTopicos(req, res));
+app.post('/api/topicos', (req, res) => topicoController.createTopico(req, res));
+app.get('/api/topicos/:id', (req, res) => topicoController.getTopicoById(req, res));
+app.put('/api/topicos/:id', (req, res) => topicoController.updateTopico(req, res));
+app.delete('/api/topicos/:id', (req, res) => topicoController.deleteTopico(req, res));
 
-// Routes for Logros
+// Routes for Powerup
+app.get('/api/powerup', (req, res) => powerupController.getAllPowerup(req, res));
+app.post('/api/powerup', (req, res) => powerupController.createPowerup(req, res));
+app.get('/api/powerup/:id', (req, res) => powerupController.getPowerUpById(req, res));
+app.put('/api/powerup/:id', (req, res) => powerupController.updatePowerup(req, res));
+app.delete('/api/powerup/:id', (req, res) => powerupController.deletePowerup(req, res));
 
-app.get("/api/logro", (req, res) => logroController.getAllLogro(req, res));
-app.post("/api/logro", (req, res) => logroController.createLogro(req, res));
-app.get("/api/logro/:id", (req, res) => logroController.getLogroById(req, res));
-app.put("/api/logro/:id", (req, res) => logroController.updateLogro(req, res));
-app.delete("/api/logro/soft/:id", (req, res) => logroController.deleteSoftLogro(req, res));
 
 // Server setup
 app.listen(PORT, () => {
