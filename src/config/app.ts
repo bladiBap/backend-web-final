@@ -1,8 +1,11 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 
 import { CuestionarioController } from "../application/controllers/cuestionarios/cuestionarioController";
 import { PreguntaController } from "../application/controllers/cuestionarios/preguntaController";
 import { MisionController } from "../application/controllers/mision/misionController";
+import { UsuarioController } from "../application/controllers/usuario/usuarioController";
+import { LogroController } from "../application/controllers/logro/logroController";
 
 const cors = require('cors');
 
@@ -11,11 +14,17 @@ const PORT = process.env.PORT || 3000;
 
 // Middlewares
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}));
+app.use(cookieParser());
 
 const cuestionarioController = new CuestionarioController();
 const preguntaController = new PreguntaController();
 const misionController = new MisionController();
+const usuarioController = new UsuarioController();
+const logroController = new LogroController();
 
 // Routes for Cuestionarios
 app.get('/api/cuestionarios', (req, res) => cuestionarioController.getAllCuestionarios(req, res));
@@ -39,6 +48,24 @@ app.get("/api/mision/:id", (req, res) => misionController.getMisionById(req, res
 app.put("/api/mision/:id", (req, res) => misionController.updateMision(req, res));
 app.delete("/api/mision/soft/:id", (req, res) => misionController.deleteSoftMision(req, res));
 
+// Routes for Usuarios
+
+app.get("/api/usuario", (req, res) => usuarioController.getAllUsuario(req, res));
+app.post("/api/usuario", (req, res) => usuarioController.createUsuario(req, res));
+app.get("/api/usuario/id/:id", (req, res) => usuarioController.getUsuarioById(req, res));
+app.put("/api/usuario/:id", (req, res) => usuarioController.updateUsuario(req, res));
+app.delete("/api/usuario/:id", (req, res) => usuarioController.deleteUsuario(req, res));
+app.post("/api/usuario/login", (req, res) => usuarioController.login(req, res));
+app.post("/api/usuario/logout", (req, res) => usuarioController.logout(req, res));
+app.get("/api/usuario/me", (req, res) => usuarioController.getUserByToken(req, res));
+
+// Routes for Logros
+
+app.get("/api/logro", (req, res) => logroController.getAllLogro(req, res));
+app.post("/api/logro", (req, res) => logroController.createLogro(req, res));
+app.get("/api/logro/:id", (req, res) => logroController.getLogroById(req, res));
+app.put("/api/logro/:id", (req, res) => logroController.updateLogro(req, res));
+app.delete("/api/logro/soft/:id", (req, res) => logroController.deleteSoftLogro(req, res));
 
 // Server setup
 app.listen(PORT, () => {

@@ -1,5 +1,5 @@
 import { db } from '../../database/connection';
-import { Mision } from '../../../core/domain/entities/mision';
+import { Mision } from '../../../core/domain/entities/mision/mision';
 import { MisionRepository } from '../../../core/repositories/mision/misionRepository';
 
 export class MisionRepositoryImpl implements MisionRepository {
@@ -34,12 +34,17 @@ export class MisionRepositoryImpl implements MisionRepository {
     }
 
     async findAll(): Promise<Mision[]> {
-        return await db.mision.findMany();
+        return await db.mision.findMany({
+            where: { is_deleted: false }
+        });
     }
 
     async findById(id: number): Promise<Mision | null> {
         return await db.mision.findUnique({
-            where: { id }
+            where: { 
+                id,
+                is_deleted: false
+            }
         });
     }
 
