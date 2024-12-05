@@ -8,4 +8,11 @@ export interface UsuarioRepository {
     findByEmail(correo: string): Promise<Usuario | null>;
     delete(id: number): Promise<void>;
     assignPowerupToUser(userId: number, powerupId: number, cantidad : number): Promise<void>;
+    getAllInformation(userId: number): Promise<any>;
+    getCuestionariosCompletesByUserId(userId: number): Promise<any>;
+    completeCuestionario( userId: number, cuestionarioId: number): Promise<void>;
+    verifyLogroUser (userId: number, logroId: number): Promise<boolean>;
+    verifyMisionUser (userId: number, misionId: number): Promise<boolean>;
+    completeLogro(userId: number, logroId: number): Promise<void>;
+    updatePuntaje(userId: number, puntaje: number): Promise<void>;
 }

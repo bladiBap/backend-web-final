@@ -91,6 +91,10 @@ app.post("/api/usuario/login", (req, res) => usuarioController.login(req, res));
 app.post("/api/usuario/logout", (req, res) => usuarioController.logout(req, res));
 app.get("/api/usuario/me", (req, res) => usuarioController.getUserByToken(req, res));
 app.post("/api/usuario/powerup", (req, res) => usuarioController.assignPowerupToUser(req, res));
+app.get("/api/usuario/me/information", (req, res) => usuarioController.getAllInformationUser(req, res));
+app.post("/api/usuario/cuestionario/complete", (req, res) => usuarioController.completeCuestionario(req, res));
+app.post("/api/usuario/cuestionario/complete/logro", (req, res) => usuarioController.verifyCompleteLogroByCuestionario(req, res));
+app.post("/api/usuario/cuestionario/complete/mision", (req, res) => usuarioController.verifyCompleteMisionCuestionario(req, res));
 
 // Routes for Logros
 app.get("/api/logro", (req, res) => logroController.getAllLogro(req, res));

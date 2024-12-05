@@ -17,6 +17,7 @@ export class UsuarioWithPowerups{
         public apellido: string,
         public correo: string,
         public rol: rol,
+        public puntaje: number,
         public usuariopowerup : any,
         public contrasena?: string,
         public id?: number,
