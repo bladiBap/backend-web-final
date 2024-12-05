@@ -111,6 +111,7 @@ model Cuestionario {
 model Pregunta {
   id              Int          @id @default(autoincrement())
   enunciado       String
+  orden           Int
   cuestionario_id Int
   cuestionario    Cuestionario @relation(fields: [cuestionario_id], references: [id], onDelete: Cascade)
   opciones        Opcion[]

@@ -10,12 +10,14 @@ export class CreatePregunta {
     async execute(
         data: { 
             enunciado: string; 
+            orden: number;
             cuestionario_id: number;
             opciones: Opcion[];
         }
     ) : Promise<Pregunta> {
         const newPregunta = new PreguntaCreate(
             data.enunciado,
+            data.orden,
             data.cuestionario_id,
             data.opciones
         )
