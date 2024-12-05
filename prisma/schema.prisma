@@ -49,7 +49,7 @@ model usuario {
 
   nombre     String
   apellido   String
-  correo     String
+  correo     String   @unique
   contrasena String
   rol        rol      @default(USER)
   createdAT  DateTime @default(now())

@@ -8,6 +8,7 @@ export class UsuarioRepositoryImpl implements UsuarioRepository {
         const newUsuario = await db.usuario.create({
             data: {
                 nombre: usuario.nombre,
+                fk_nivel : 1,
                 apellido: usuario.apellido,
                 correo: usuario.correo,
                 rol: usuario.rol || 'USER',
@@ -44,7 +45,15 @@ export class UsuarioRepositoryImpl implements UsuarioRepository {
 
     async findById(id: number): Promise<Usuario | null> {
         return await db.usuario.findUnique({
-            where: {id}
+            where: {id},
+            select: {
+                id: true,
+                nombre: true,
+                apellido: true,
+                correo: true,
+                rol: true,
+                nivel: true
+            }
         });
     }
 
