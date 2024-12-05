@@ -126,9 +126,9 @@ model usuariopregunta {
   fk_usuario  Int
   fk_pregunta Int
   fk_opcion   Int
-  usuario     usuario @relation(fields: [fk_usuario], references: [id])
-  pregunta    Pregunta @relation(fields: [fk_pregunta], references: [id])
-  opcion      Opcion @relation(fields: [fk_opcion], references: [id])
+  usuario     usuario @relation(fields: [fk_usuario], references: [id], onDelete: Cascade)
+  pregunta    Pregunta @relation(fields: [fk_pregunta], references: [id], onDelete: Cascade)
+  opcion      Opcion @relation(fields: [fk_opcion], references: [id], onDelete: Cascade)
 }
 
 model Opcion {

@@ -130,4 +130,10 @@ export class CuestionarioRepositoryImpl implements CuestionarioRepository {
         
         return detailedRanking;
     }
+
+    async findByUser(userId: number): Promise<Cuestionario[]> {
+        return await db.cuestionario.findMany({
+            where: { fk_usuario: userId },
+        });
+    }
 }

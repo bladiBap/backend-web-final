@@ -6,6 +6,6 @@ export interface CuestionarioRepository {
     findAll(): Promise<CuestionarioDetail[]>;
     findById(id: number): Promise<CuestionarioDetail | null>;
     delete(id: number): Promise<void>;
+    findByUser(userId: number): Promise<Cuestionario[]>;
     // findByTitle(title: string): Promise<Cuestionario | null>;
-    // findByUser(userId: number): Promise<Cuestionario[]>;
 }

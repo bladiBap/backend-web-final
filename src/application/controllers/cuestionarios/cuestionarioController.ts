@@ -3,6 +3,7 @@ import { CuestionarioRepositoryImpl } from "../../../infrastructure/repositories
 import { CreateCuestionario } from '../../../core/domain/use-cases/cuestionario/createCuestionario';
 import { PreguntaValidator } from './preguntaValidator';
 import { UsuarioRepositoryImpl } from '../../../infrastructure/repositories/usuario/usuarioRepositoryImpl';
+import { obtenerUsuario } from '../../../utils/jwt';
 
 export class CuestionarioController {
     private cuestionarioRepository = new CuestionarioRepositoryImpl();
@@ -137,6 +138,23 @@ export class CuestionarioController {
         try {
             const ranking = await this.cuestionarioRepository.getRanking(Number(id));
             res.json(ranking);
+        } catch (e) {
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+
+    async findByUserId(req: Request, res: Response): Promise<void> {
+        const { token } = req.cookies;
+        const usuario_id = obtenerUsuario(token);
+
+        if (!usuario_id) {
+            res.status(400).json({ message: 'Usuario no encontrado' });
+            return;
+        }
+
+        try {
+            const cuestionarios = await this.cuestionarioRepository.findByUser(usuario_id.id);
+            res.json(cuestionarios);
         } catch (e) {
             res.status(500).json({ message: 'Internal server error' });
         }
