@@ -39,6 +39,7 @@ app.post('/api/cuestionarios', (req, res) => cuestionarioController.createCuesti
 app.get('/api/cuestionarios/:id', (req, res) => cuestionarioController.getCuestionarioById(req, res));
 app.put('/api/cuestionarios/:id', (req, res) => cuestionarioController.updateCuestionario(req, res));
 app.delete('/api/cuestionarios/:id', (req, res) => cuestionarioController.deleteCuestionario(req, res));
+app.get('/api/cuestionarios/:id/ranking', (req, res) => cuestionarioController.getRanking(req, res));
 
 // Routes for Preguntas
 app.get('/api/preguntas', (req, res) => preguntaController.getAllPreguntas(req, res));

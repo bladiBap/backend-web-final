@@ -130,4 +130,15 @@ export class CuestionarioController {
             res.status(500).json({ message: 'Internal server error' });
         }
     }
+
+    async getRanking(req: Request, res: Response): Promise<void> {
+        const { id } = req.params;
+
+        try {
+            const ranking = await this.cuestionarioRepository.getRanking(Number(id));
+            res.json(ranking);
+        } catch (e) {
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
 }
