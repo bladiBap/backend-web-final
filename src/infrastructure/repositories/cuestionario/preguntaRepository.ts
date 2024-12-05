@@ -19,6 +19,7 @@ export class PreguntaRepositoryImpl implements PreguntaRepository {
         })
         return newPregunta;
     }
+
     async update(
         id: number, 
         pregunta: Omit<PreguntaCreate, "cuestionario_id">
@@ -39,6 +40,7 @@ export class PreguntaRepositoryImpl implements PreguntaRepository {
         });
         return updatedPregunta;
     }
+
     async findAll(): Promise<Pregunta[]> {
         return await db.pregunta.findMany({
             include: {
@@ -46,6 +48,7 @@ export class PreguntaRepositoryImpl implements PreguntaRepository {
             }
         });
     }
+
     async findById(id: number): Promise<Pregunta | null> {
         return await db.pregunta.findUnique({
             where: { id },
@@ -54,9 +57,21 @@ export class PreguntaRepositoryImpl implements PreguntaRepository {
             }
         });
     }
+
     async delete(id: number): Promise<void> {
         await db.pregunta.delete({
             where: { id }
+        });
+    }
+
+    async addUsuarioRespuesta(pregunta_id: number, usuario_id: number, opcion_id: number, puntos: number): Promise<void> {
+        await db.usuariopregunta.create({
+            data: {
+                valor: puntos,
+                fk_usuario: usuario_id,
+                fk_pregunta: pregunta_id,
+                fk_opcion: opcion_id
+            }
         });
     }
 }

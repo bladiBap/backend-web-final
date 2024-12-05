@@ -46,6 +46,7 @@ app.post('/api/preguntas', (req, res) => preguntaController.createPregunta(req, 
 app.get('/api/preguntas/:id', (req, res) => preguntaController.getPreguntaById(req, res));
 app.put('/api/preguntas/:id', (req, res) => preguntaController.updatePregunta(req, res));
 app.delete('/api/preguntas/:id', (req, res) => preguntaController.deletePregunta(req, res));
+app.post('/api/preguntas/usuario-respuesta', (req, res) => preguntaController.addUsuarioRespuesta(req, res));
 
 // Routes for Misiones
 
