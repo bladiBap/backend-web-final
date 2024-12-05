@@ -21,6 +21,8 @@ export class CuestionarioCreate {
     constructor (
         public titulo: string,
         public descripcion: string,
+        public fk_usuario: number,
+        public fk_topico: number,
         public preguntas: Omit<PreguntaCreate, "cuestionario_id">[],
     ) {}
 }

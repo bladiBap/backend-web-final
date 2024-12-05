@@ -8,6 +8,8 @@ export class CuestionarioRepositoryImpl implements CuestionarioRepository {
             data: {
                 titulo: cuestionario.titulo,
                 descripcion: cuestionario.descripcion,
+                fk_usuario: cuestionario.fk_usuario,
+                fk_topico: cuestionario.fk_topico,
                 preguntas: {
                     create: cuestionario.preguntas.map(pregunta => ({
                         ...pregunta,
@@ -39,6 +41,7 @@ export class CuestionarioRepositoryImpl implements CuestionarioRepository {
             data: {
                 titulo: cuestionario.titulo,
                 descripcion: cuestionario.descripcion,
+                fk_topico: cuestionario.fk_topico,
                 preguntas: {
                     create: cuestionario.preguntas.map((pregunta) => ({
                         enunciado: pregunta.enunciado,

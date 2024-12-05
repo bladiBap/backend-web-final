@@ -12,6 +12,8 @@ export class UpdateCuestionario {
             idInt: number; 
             titulo: string;
             descripcion: string;
+            fk_usuario: number;
+            fk_topico: number;
             preguntas: Omit<PreguntaCreate, "cuestionario_id">[];
         }
     ): Promise<Cuestionario> {
@@ -22,6 +24,8 @@ export class UpdateCuestionario {
         const updatedCuestionario = new CuestionarioCreate(
             data.titulo,
             data.descripcion,
+            data.fk_usuario,
+            data.fk_topico,
             data.preguntas
         );
         return await this.cuestionarioRepository.update(data.idInt, updatedCuestionario);

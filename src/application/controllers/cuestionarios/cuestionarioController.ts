@@ -13,7 +13,7 @@ export class CuestionarioController {
     }
 
     async createCuestionario(req: Request, res: Response): Promise<void> {
-        const { titulo, descripcion, preguntas } = req.body;
+        const { titulo, descripcion, fk_usuario, fk_topico, preguntas } = req.body;
         // Validación: Nombre no puede estar vacío
         if (!titulo || titulo.trim() === '') {
             res.status(400).json({ message: 'El titulo no puede estar vacío.' });
@@ -37,6 +37,8 @@ export class CuestionarioController {
             const cuestionario = await createCuestionario.execute({ 
                 titulo, 
                 descripcion,
+                fk_usuario,
+                fk_topico,
                 preguntas
             });
             res.status(201).json({ ...cuestionario });
@@ -63,7 +65,7 @@ export class CuestionarioController {
 
     async updateCuestionario(req: Request, res: Response): Promise<void> {
         const { id } = req.params;
-        const { titulo, descripcion, preguntas } = req.body;
+        const { titulo, descripcion, fk_usuario, fk_topico, preguntas } = req.body;
 
         try {
             const cuestionario = await this.cuestionarioRepository.findById(Number(id));
@@ -90,7 +92,13 @@ export class CuestionarioController {
 
             const updatedCuestionario = await this.cuestionarioRepository.update(
                 Number(id), 
-                { titulo, descripcion, preguntas }
+                { 
+                    titulo, 
+                    descripcion, 
+                    fk_usuario,
+                    fk_topico,
+                    preguntas 
+                }
             );
             res.status(200).json({ ...updatedCuestionario });
         } catch (e) {
