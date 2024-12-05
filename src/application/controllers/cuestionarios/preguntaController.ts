@@ -100,7 +100,7 @@ export class PreguntaController {
             return;
         }
 
-        if (!pregunta_id  || !opcion_id || !puntos) {
+        if (!pregunta_id  || !opcion_id || !Number.isNaN(puntos)) {
             res.status(400).json({ message: 'Los campos pregunta_id, opcion_id y puntos son requeridos.' });
             return;
         }

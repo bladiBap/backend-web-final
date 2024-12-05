@@ -156,6 +156,7 @@ export class CuestionarioController {
             const cuestionarios = await this.cuestionarioRepository.findByUser(usuario_id.id);
             res.json(cuestionarios);
         } catch (e) {
+            console.log(e);
             res.status(500).json({ message: 'Internal server error' });
         }
     }
