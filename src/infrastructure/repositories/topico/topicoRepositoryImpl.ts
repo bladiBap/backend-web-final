@@ -1,4 +1,3 @@
-
 import { Topic, TopicCreate, TopicWithCuestionarios } from "../../../core/domain/entities/topic";
 import { TopicoRepository } from "../../../core/repositories/topico/topicoRepository";
 import { db } from "../../database/connection";

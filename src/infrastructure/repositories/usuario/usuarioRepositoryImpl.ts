@@ -1,5 +1,5 @@
 import { db } from '../../database/connection';
-import { Usuario } from '../../../core/domain/entities/usuario/usuario';
+import { Usuario, UsuarioWithPowerups } from '../../../core/domain/entities/usuario/usuario';
 import { UsuarioRepository } from '../../../core/repositories/usuario/usuarioRepository';
 
 export class UsuarioRepositoryImpl implements UsuarioRepository {
@@ -8,7 +8,7 @@ export class UsuarioRepositoryImpl implements UsuarioRepository {
         const newUsuario = await db.usuario.create({
             data: {
                 nombre: usuario.nombre,
-                fk_nivel : 1,
+                fk_nivel: 1,
                 apellido: usuario.apellido,
                 correo: usuario.correo,
                 rol: usuario.rol || 'USER',
@@ -39,27 +39,60 @@ export class UsuarioRepositoryImpl implements UsuarioRepository {
                 apellido: true,
                 correo: true,
                 rol: true
-            }
+            },
         });
     }
 
-    async findById(id: number): Promise<Usuario | null> {
+    async findById(id: number): Promise<UsuarioWithPowerups | null> {
         return await db.usuario.findUnique({
-            where: {id},
+            where: { id },
             select: {
                 id: true,
                 nombre: true,
                 apellido: true,
                 correo: true,
                 rol: true,
-                nivel: true
-            }
+                nivel: true,
+                usuariopowerup: {
+                    select: {
+                        cantidad: true,
+                        powerup: {
+                            select: {
+                                id: true,
+                                nombre: true,
+                                descripcion: true,
+                            }
+                        }
+                    }
+                }
+            },
         });
     }
 
     async findByEmail(correo: string): Promise<Usuario | null> {
         return await db.usuario.findUnique({
-            where: {correo}
+            where: { correo },
+            select: {
+                id: true,
+                nombre: true,
+                apellido: true,
+                correo: true,
+                rol: true,
+                contrasena: true,
+                nivel: true,
+                usuariopowerup: {
+                    select: {
+                        cantidad: true,
+                        powerup: {
+                            select: {
+                                id: true,
+                                nombre: true,
+                                descripcion: true,
+                            }
+                        }
+                    }
+                }
+            },
         });
     }
 
@@ -67,5 +100,15 @@ export class UsuarioRepositoryImpl implements UsuarioRepository {
         await db.usuario.delete({
             where: { id }
         });
+    }
+
+    async assignPowerupToUser(userId: number, powerupId: number, cantidad: number): Promise<void> {
+        await db.usuariopowerup.create({
+            data: {
+                fk_usuario: userId,
+                fk_powerup: powerupId,
+                cantidad
+            }
+        })
     }
 }

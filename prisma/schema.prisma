@@ -158,8 +158,6 @@ model usuariopowerup {
   fk_usuario Int
   fk_powerup Int
   cantidad   Int
-  createdAT  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
 
   usuario usuario @relation(fields: [fk_usuario], references: [id])
   powerup Powerup @relation(fields: [fk_powerup], references: [id])

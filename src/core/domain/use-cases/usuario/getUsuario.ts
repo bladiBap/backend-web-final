@@ -8,7 +8,7 @@ export class GetUsuario {
         return await this.usuarioRepository.findById(id);
     }
 
-    async executeByEmail(email: string): Promise<Usuario | null> {      
-        return await this.usuarioRepository.findByEmail(email);
+    async executeByEmail(correo: string): Promise<Usuario | null> {      
+        return await this.usuarioRepository.findByEmail(correo);
     }
 }
