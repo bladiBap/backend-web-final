@@ -14,46 +14,52 @@ datasource db {
 }
 
 model mision {
-  id              Int      @id @default(autoincrement())
-  nombre          String
-  descripcion     String
-  objetivo        Int
-  por_puntos      Boolean
-  recompensa      Int
-  is_deleted      Boolean  @default(false)
-  fk_powerup      Int
-  createdAT       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  objetivo    Int
+  por_puntos  Boolean
+  recompensa  Int
+  is_deleted  Boolean  @default(false)
+  fk_powerup  Int
+  createdAT   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  usuariomision   usuariomision[]
+  powerup       Powerup         @relation(fields: [fk_powerup], references: [id])
+  usuariomision usuariomision[]
 }
 
 model logro {
-  id              Int      @id @default(autoincrement())
-  nombre          String
-  descripcion     String
-  objetivo        Int
-  recompensa      Int
-  por_puntos      Boolean
-  createdAT       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  is_deleted      Boolean  @default(false)
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  objetivo    Int
+  recompensa  Int
+  por_puntos  Boolean
+  createdAT   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  is_deleted  Boolean  @default(false)
 
-  usuariologro    usuariologro[]
+  usuariologro usuariologro[]
 }
 
 model usuario {
-  id              Int      @id @default(autoincrement())
-  nombre          String
-  apellido        String
-  correo          String   @unique
-  contrasena      String
-  rol             rol      @default(USER)
-  createdAT       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  
-  usuariomision   usuariomision[]
-  usuariologro    usuariologro[]
+  id       Int @id @default(autoincrement())
+  fk_nivel Int
+
+  nombre     String
+  apellido   String
+  correo     String
+  contrasena String
+  rol        rol      @default(USER)
+  createdAT  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  usuariomision  usuariomision[]
+  usuariologro   usuariologro[]
+  usuariopowerup usuariopowerup[]
+  nivel          nivel            @relation(fields: [fk_nivel], references: [id])
+  Cuestionario   Cuestionario[]
 }
 
 enum rol {
@@ -62,49 +68,102 @@ enum rol {
 }
 
 model usuariomision {
-  id              Int      @id @default(autoincrement())
+  id               Int      @id @default(autoincrement())
   fk_usuario       Int
   fk_mision        Int
-  completada      Boolean
+  completada       Boolean
   fecha_completada DateTime
-  createdAT       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAT        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  usuario         usuario  @relation(fields: [fk_usuario], references: [id])
-  mision          mision   @relation(fields: [fk_mision], references: [id])
+  usuario usuario @relation(fields: [fk_usuario], references: [id])
+  mision  mision  @relation(fields: [fk_mision], references: [id])
 }
 
 model usuariologro {
-  id              Int      @id @default(autoincrement())
+  id               Int      @id @default(autoincrement())
   fk_usuario       Int
   fk_logro         Int
-  completado      Boolean
+  completado       Boolean
   fecha_completado DateTime
-  createdAT       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAT        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  usuario         usuario  @relation(fields: [fk_usuario], references: [id])
-  logro           logro    @relation(fields: [fk_logro], references: [id])
+  usuario usuario @relation(fields: [fk_usuario], references: [id])
+  logro   logro   @relation(fields: [fk_logro], references: [id])
 }
+
 model Cuestionario {
-  id          Int       @id @default(autoincrement())
+  id         Int @id @default(autoincrement())
+  fk_topico  Int
+  fk_usuario Int
+
   titulo      String
   descripcion String
   preguntas   Pregunta[]
+  createdAT   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  usuario usuario @relation(fields: [fk_usuario], references: [id])
+  topico  Topico  @relation(fields: [fk_topico], references: [id])
 }
 
 model Pregunta {
   id              Int          @id @default(autoincrement())
   enunciado       String
+  orden           Int
   cuestionario_id Int
-  cuestionario    Cuestionario  @relation(fields: [cuestionario_id], references: [id], onDelete: Cascade)
+  cuestionario    Cuestionario @relation(fields: [cuestionario_id], references: [id], onDelete: Cascade)
   opciones        Opcion[]
 }
 
 model Opcion {
-  id          Int       @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   texto       String
   es_correcta Boolean
   pregunta_id Int
-  pregunta    Pregunta  @relation(fields: [pregunta_id], references: [id], onDelete: Cascade)
+  pregunta    Pregunta @relation(fields: [pregunta_id], references: [id], onDelete: Cascade)
+}
+
+model nivel {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  usuario     usuario[]
+  Powerup     Powerup[]
+}
+
+model Powerup {
+  id       Int @id @default(autoincrement())
+  fk_nivel Int
+
+  nombre      String
+  descripcion String
+  createdAT   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  nivel          nivel            @relation(fields: [fk_nivel], references: [id])
+  mision         mision[]
+  usuariopowerup usuariopowerup[]
+}
+
+model Topico {
+  id           Int            @id @default(autoincrement())
+  nombre       String
+  descripcion  String
+  createdAT    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Cuestionario Cuestionario[]
+}
+
+model usuariopowerup {
+  id         Int      @id @default(autoincrement())
+  fk_usuario Int
+  fk_powerup Int
+  cantidad   Int
+  createdAT  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  usuario usuario @relation(fields: [fk_usuario], references: [id])
+  powerup Powerup @relation(fields: [fk_powerup], references: [id])
 }
