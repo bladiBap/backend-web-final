@@ -3,7 +3,7 @@ import { Cuestionario, CuestionarioCreate, CuestionarioDetail } from "../../doma
 export interface CuestionarioRepository {
     save(cuestionario: CuestionarioCreate): Promise<CuestionarioDetail>;
     update(id: number, cuestionario: CuestionarioCreate): Promise<CuestionarioDetail>;
-    findAll(): Promise<Cuestionario[]>;
+    findAll(): Promise<CuestionarioDetail[]>;
     findById(id: number): Promise<CuestionarioDetail | null>;
     delete(id: number): Promise<void>;
     // findByTitle(title: string): Promise<Cuestionario | null>;

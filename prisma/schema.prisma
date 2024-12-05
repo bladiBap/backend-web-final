@@ -60,6 +60,7 @@ model usuario {
   usuariopowerup usuariopowerup[]
   nivel          nivel            @relation(fields: [fk_nivel], references: [id])
   Cuestionario   Cuestionario[]
+  usuariopregunta usuariopregunta[]
 }
 
 enum rol {
@@ -115,6 +116,18 @@ model Pregunta {
   cuestionario_id Int
   cuestionario    Cuestionario @relation(fields: [cuestionario_id], references: [id], onDelete: Cascade)
   opciones        Opcion[]
+  usuariopregunta usuariopregunta[]
+}
+
+model usuariopregunta {
+  id          Int      @id @default(autoincrement())
+  valor       Int
+  fk_usuario  Int
+  fk_pregunta Int
+  fk_opcion   Int
+  usuario     usuario @relation(fields: [fk_usuario], references: [id])
+  pregunta    Pregunta @relation(fields: [fk_pregunta], references: [id])
+  opcion      Opcion @relation(fields: [fk_opcion], references: [id])
 }
 
 model Opcion {
@@ -123,6 +136,7 @@ model Opcion {
   es_correcta Boolean
   pregunta_id Int
   pregunta    Pregunta @relation(fields: [pregunta_id], references: [id], onDelete: Cascade)
+  usuariopregunta usuariopregunta[]
 }
 
 model nivel {

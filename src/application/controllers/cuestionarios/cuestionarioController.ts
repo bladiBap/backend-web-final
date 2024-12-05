@@ -2,9 +2,11 @@ import { Request, Response } from 'express';
 import { CuestionarioRepositoryImpl } from "../../../infrastructure/repositories/cuestionario/cuestionarioRepositoryImpl";
 import { CreateCuestionario } from '../../../core/domain/use-cases/cuestionario/createCuestionario';
 import { PreguntaValidator } from './preguntaValidator';
+import { UsuarioRepositoryImpl } from '../../../infrastructure/repositories/usuario/usuarioRepositoryImpl';
 
 export class CuestionarioController {
     private cuestionarioRepository = new CuestionarioRepositoryImpl();
+    private usuarioRepository = new UsuarioRepositoryImpl();
     private preguntaValidator = new PreguntaValidator(this.cuestionarioRepository);
 
     async getAllCuestionarios(req: Request, res: Response): Promise<void> {
@@ -23,6 +25,12 @@ export class CuestionarioController {
         // Validación: Descripción no puede estar vacía
         if (!descripcion || descripcion.trim() === '') {
             res.status(400).json({ message: 'La descripción no puede estar vacía.' });
+            return;
+        }
+
+        const usuario = await this.usuarioRepository.findById(fk_usuario);
+        if (!usuario) {
+            res.status(404).json({ message: 'Usuario no encontrado' });
             return;
         }
 

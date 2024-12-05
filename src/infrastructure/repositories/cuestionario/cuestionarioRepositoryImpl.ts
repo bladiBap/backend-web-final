@@ -66,8 +66,16 @@ export class CuestionarioRepositoryImpl implements CuestionarioRepository {
         return updatedCuestionario;
     }
 
-    async findAll(): Promise<Cuestionario[]> {
-        return await db.cuestionario.findMany();
+    async findAll(): Promise<CuestionarioDetail[]> {
+        return await db.cuestionario.findMany({
+            include: {
+                preguntas: {
+                    include: {
+                        opciones: true
+                    }
+                }
+            }
+        });
     }
 
     async findById(id: number): Promise<CuestionarioDetail | null> {
