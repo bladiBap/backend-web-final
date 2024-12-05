@@ -17,10 +17,11 @@ export class CreatePowerup {
             fk_nivel: number;
         }
     ): Promise<Level> {
+        const nivel = Number(data.fk_nivel);
         const newPowerup = new PowerUpCreate(
             data.nombre,
             data.descripcion,
-            data.fk_nivel
+            nivel
         );
         return await this.powerupRepository.save(newPowerup);
     }
