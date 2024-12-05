@@ -26,21 +26,27 @@ export class TopicoRepositoryImpl implements TopicoRepository {
     }
 
     async findAll(): Promise<TopicWithCuestionarios[]> {
-        return await db.topico.findMany(
-            {
-                include: {
-                    cuestionarios: true
-                }
-            }
-        );
+        return await db.topico.findMany({
+            include: {
+                cuestionarios: {
+                    include: {
+                        usuario: true,
+                    },
+                },
+            },
+        });
     }
 
     async findById(id: number): Promise<TopicWithCuestionarios | null> {
         return await db.topico.findUnique({
             where: { id },
             include: {
-                cuestionarios: true
-            }
+                cuestionarios: {
+                    include: {
+                        usuario: true,
+                    },
+                },
+            },
         });
     }
 
