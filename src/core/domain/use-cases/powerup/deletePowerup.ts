@@ -8,6 +8,7 @@ export class DeletePowerup {
     async execute(
         id: number
     ): Promise<void> {
-        return await this.powerupRepository.delete(id);
+        const idNum = Number(id);
+        return await this.powerupRepository.delete(idNum);
     }
 }

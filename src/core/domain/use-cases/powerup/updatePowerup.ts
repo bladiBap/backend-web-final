@@ -18,10 +18,11 @@ export class UpdatePowerup {
         if (!powerup) {
             throw new Error("Powerup not found");
         }
+        const nivel = Number(data.fk_nivel);
         const updatedPowerup = new PowerUpCreate(
             data.nombre,
             data.descripcion,
-            data.fk_nivel
+            nivel
         );
         return await this.powerupRepository.update(data.idInt, updatedPowerup);
     }

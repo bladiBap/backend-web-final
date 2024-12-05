@@ -66,8 +66,16 @@ export class CuestionarioRepositoryImpl implements CuestionarioRepository {
         return updatedCuestionario;
     }
 
-    async findAll(): Promise<Cuestionario[]> {
-        return await db.cuestionario.findMany();
+    async findAll(): Promise<CuestionarioDetail[]> {
+        return await db.cuestionario.findMany({
+            include: {
+                preguntas: {
+                    include: {
+                        opciones: true
+                    }
+                }
+            }
+        });
     }
 
     async findById(id: number): Promise<CuestionarioDetail | null> {
@@ -89,4 +97,43 @@ export class CuestionarioRepositoryImpl implements CuestionarioRepository {
         });
     }
 
+    async getRanking(id: number): Promise<any> {
+        const ranking = await db.usuariopregunta.groupBy({
+            by: ['fk_usuario'], // Agrupar por usuario
+            _sum: {
+                valor: true, // Sumar los puntos
+            },
+            where: {
+                pregunta: {
+                    cuestionario_id: id, // Filtrar por cuestionario
+                },
+            },
+            orderBy: {
+                _sum: {
+                    valor: 'desc', // Ordenar por puntos acumulados
+                },
+            },
+        });
+
+        const detailedRanking = await Promise.all(
+            ranking.map(async (rank) => {
+                const user = await db.usuario.findUnique({
+                    where: { id: rank.fk_usuario },
+                    select: { nombre: true, apellido: true, puntaje: true },
+                });
+                return {
+                    usuario: `${user?.nombre} ${user?.apellido}`,
+                    puntaje: rank._sum.valor || 0,
+                };
+            })
+        );
+        
+        return detailedRanking;
+    }
+
+    async findByUser(userId: number): Promise<Cuestionario[]> {
+        return await db.cuestionario.findMany({
+            where: { fk_usuario: userId },
+        });
+    }
 }

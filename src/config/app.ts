@@ -41,6 +41,7 @@ app.post('/api/cuestionarios', (req, res) => cuestionarioController.createCuesti
 app.get('/api/cuestionarios/:id', (req, res) => cuestionarioController.getCuestionarioById(req, res));
 app.put('/api/cuestionarios/:id', (req, res) => cuestionarioController.updateCuestionario(req, res));
 app.delete('/api/cuestionarios/:id', (req, res) => cuestionarioController.deleteCuestionario(req, res));
+app.get('/api/cuestionarios/:id/ranking', (req, res) => cuestionarioController.getRanking(req, res));
 
 // Routes for Preguntas
 app.get('/api/preguntas', (req, res) => preguntaController.getAllPreguntas(req, res));
@@ -48,6 +49,7 @@ app.post('/api/preguntas', (req, res) => preguntaController.createPregunta(req, 
 app.get('/api/preguntas/:id', (req, res) => preguntaController.getPreguntaById(req, res));
 app.put('/api/preguntas/:id', (req, res) => preguntaController.updatePregunta(req, res));
 app.delete('/api/preguntas/:id', (req, res) => preguntaController.deletePregunta(req, res));
+app.post('/api/preguntas/usuario-respuesta', (req, res) => preguntaController.addUsuarioRespuesta(req, res));
 
 // Routes for Misiones
 

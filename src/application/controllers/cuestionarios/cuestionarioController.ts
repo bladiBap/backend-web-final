@@ -2,9 +2,12 @@ import { Request, Response } from 'express';
 import { CuestionarioRepositoryImpl } from "../../../infrastructure/repositories/cuestionario/cuestionarioRepositoryImpl";
 import { CreateCuestionario } from '../../../core/domain/use-cases/cuestionario/createCuestionario';
 import { PreguntaValidator } from './preguntaValidator';
+import { UsuarioRepositoryImpl } from '../../../infrastructure/repositories/usuario/usuarioRepositoryImpl';
+import { obtenerUsuario } from '../../../utils/jwt';
 
 export class CuestionarioController {
     private cuestionarioRepository = new CuestionarioRepositoryImpl();
+    private usuarioRepository = new UsuarioRepositoryImpl();
     private preguntaValidator = new PreguntaValidator(this.cuestionarioRepository);
 
     async getAllCuestionarios(req: Request, res: Response): Promise<void> {
@@ -23,6 +26,12 @@ export class CuestionarioController {
         // Validación: Descripción no puede estar vacía
         if (!descripcion || descripcion.trim() === '') {
             res.status(400).json({ message: 'La descripción no puede estar vacía.' });
+            return;
+        }
+
+        const usuario = await this.usuarioRepository.findById(fk_usuario);
+        if (!usuario) {
+            res.status(404).json({ message: 'Usuario no encontrado' });
             return;
         }
 
@@ -118,6 +127,34 @@ export class CuestionarioController {
             }
             await this.cuestionarioRepository.delete(Number(id));
             res.status(200).json({ message: 'Cuestionario eliminado' });
+        } catch (e) {
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+
+    async getRanking(req: Request, res: Response): Promise<void> {
+        const { id } = req.params;
+
+        try {
+            const ranking = await this.cuestionarioRepository.getRanking(Number(id));
+            res.json(ranking);
+        } catch (e) {
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+
+    async findByUserId(req: Request, res: Response): Promise<void> {
+        const { token } = req.cookies;
+        const usuario_id = obtenerUsuario(token);
+
+        if (!usuario_id) {
+            res.status(400).json({ message: 'Usuario no encontrado' });
+            return;
+        }
+
+        try {
+            const cuestionarios = await this.cuestionarioRepository.findByUser(usuario_id.id);
+            res.json(cuestionarios);
         } catch (e) {
             res.status(500).json({ message: 'Internal server error' });
         }
