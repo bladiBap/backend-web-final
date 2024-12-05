@@ -27,7 +27,7 @@ export class MisionRepositoryImpl implements MisionRepository {
                 objetivo: mision.objetivo,
                 por_puntos: mision.por_puntos,
                 recompensa: mision.recompensa,
-                fk_powerup: mision.fk_powerup ?? 0
+                fk_powerup: parseInt(mision.fk_powerup?.toString() ?? '0')
             }
         });
         return updatedMision;
@@ -35,7 +35,10 @@ export class MisionRepositoryImpl implements MisionRepository {
 
     async findAll(): Promise<Mision[]> {
         return await db.mision.findMany({
-            where: { is_deleted: false }
+            where: { is_deleted: false },
+            include: {
+                powerup: true
+            }
         });
     }
 
