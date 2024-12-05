@@ -53,6 +53,7 @@ model usuario {
   contrasena String
   rol        rol      @default(USER)
   createdAT  DateTime @default(now())
+  puntaje    Int      @default(0)
   updatedAt  DateTime @updatedAt
 
   usuariomision  usuariomision[]
