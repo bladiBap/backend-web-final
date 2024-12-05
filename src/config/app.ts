@@ -36,6 +36,7 @@ const powerupController = new PowerUpController();
 // Routes for Cuestionarios
 app.get('/api/cuestionarios', (req, res) => cuestionarioController.getAllCuestionarios(req, res));
 app.post('/api/cuestionarios', (req, res) => cuestionarioController.createCuestionario(req, res));
+app.get('/api/cuestionarios/usuario', (req, res) => cuestionarioController.findByUserId(req, res));
 app.get('/api/cuestionarios/:id', (req, res) => cuestionarioController.getCuestionarioById(req, res));
 app.put('/api/cuestionarios/:id', (req, res) => cuestionarioController.updateCuestionario(req, res));
 app.delete('/api/cuestionarios/:id', (req, res) => cuestionarioController.deleteCuestionario(req, res));
