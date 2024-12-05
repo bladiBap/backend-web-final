@@ -1,4 +1,4 @@
-import { PowerUp, PowerUpCreate } from "../../../core/domain/entities/powerup";
+import { PowerUp, PowerUpCreate, PowerUpUser } from "../../../core/domain/entities/powerup";
 import { PowerUpRepository } from "../../../core/repositories/powerup/powerupRepository";
 import { db } from "../../database/connection";
 
@@ -55,4 +55,41 @@ export class PowerUpRepositoryImpl implements PowerUpRepository {
         });
     }
 
+    async findByUser(id: number): Promise<PowerUpUser[]> {
+        return await db.usuariopowerup.findMany({
+            where: {
+                usuario: {
+                    id
+                },
+                cantidad: {
+                    gt: 0
+                }
+            },
+            select: {
+                id : true,
+                cantidad: true,
+                powerup: {
+                    select: {
+                        id: true,
+                        nombre: true,
+                        descripcion: true,
+                        nivel: true
+                    }
+                }
+            }
+        });
+    }
+
+    async usePowerup(id: number): Promise<void> {
+        await db.usuariopowerup.update({
+            where: {
+                id
+            },
+            data: {
+                cantidad: {
+                    decrement: 1
+                }
+            }
+        });
+    }
 }

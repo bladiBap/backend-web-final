@@ -6,4 +6,5 @@ export interface PowerUpRepository {
     findAll(): Promise<PowerUp[]>;
     findById(id: number): Promise<PowerUp | null>;
     delete(id: number): Promise<void>;
+    usePowerup(id : number): Promise<void>;
 }

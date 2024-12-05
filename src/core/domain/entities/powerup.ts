@@ -9,6 +9,13 @@ export class PowerUp {
     ) { }
 }
 
+export class PowerUpUser{
+    constructor(
+        public cantidad: number,
+        public powerup: PowerUp,
+    ) { }
+}
+
 export class PowerUpCreate {
     constructor(
         public nombre: string,

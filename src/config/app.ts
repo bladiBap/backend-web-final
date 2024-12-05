@@ -75,6 +75,8 @@ app.delete('/api/topicos/:id', (req, res) => topicoController.deleteTopico(req, 
 app.get('/api/powerup', (req, res) => powerupController.getAllPowerup(req, res));
 app.post('/api/powerup', (req, res) => powerupController.createPowerup(req, res));
 app.get('/api/powerup/:id', (req, res) => powerupController.getPowerUpById(req, res));
+app.post('/api/powerup/user', (req, res) => powerupController.getPowerUpsByUserId(req, res));
+app.get('/api/use/powerup/:id', (req, res) => powerupController.usePowerup(req, res));
 app.put('/api/powerup/:id', (req, res) => powerupController.updatePowerup(req, res));
 app.delete('/api/powerup/:id', (req, res) => powerupController.deletePowerup(req, res));
 

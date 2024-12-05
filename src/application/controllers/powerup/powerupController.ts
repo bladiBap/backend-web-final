@@ -6,6 +6,7 @@ import { PowerUpRepositoryImpl } from '../../../infrastructure/repositories/powe
 import { CreatePowerup } from '../../../core/domain/use-cases/powerup/createPowerup';
 import { NivelRepositoryImpl } from '../../../infrastructure/repositories/nivel/nivelRepositoryImpl';
 import { UpdatePowerup } from '../../../core/domain/use-cases/powerup/updatePowerup';
+import { validarJWT } from '../../../utils/jwt';
 
 export class PowerUpController {
     private powerupRepository = new PowerUpRepositoryImpl();
@@ -118,6 +119,32 @@ export class PowerUpController {
             const deleteTopico = new DeleteTopico(this.powerupRepository);
             await deleteTopico.execute(Number(id));
             res.status(200).json({ message: 'Powerup eliminado' });
+        } catch (e) {
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+
+    async getPowerUpsByUserId(req: Request, res: Response): Promise<void> {
+        const { token } = req.cookies;
+        if (!token) res.status(401).json({ message: 'Unauthorized' });
+        const tokenDecoded: any = validarJWT(token);
+        if (!tokenDecoded) res.status(401).json({ message: 'Unauthorized' });
+
+        try {
+            const powerups = await this.powerupRepository.findByUser(Number(tokenDecoded?.id));
+            res.status(200).json(powerups);
+        } catch (e) {
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+
+    async usePowerup(req: Request, res: Response): Promise<void> {
+
+        const { id } = req.params;
+
+        try {
+            await this.powerupRepository.usePowerup(Number(id));
+            res.status(200).json({ message: 'Powerup usado' });
         } catch (e) {
             res.status(500).json({ message: 'Internal server error' });
         }
