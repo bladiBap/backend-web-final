@@ -1,5 +1,6 @@
 import { CuestionarioRepository } from "../../../repositories/cuestionario/cuestionarioRepository";
-import { Cuestionario } from "../../entities/cuestionarios/cuestionario";
+import { Cuestionario, CuestionarioCreate } from "../../entities/cuestionarios/cuestionario";
+import { PreguntaCreate } from "../../entities/cuestionarios/pregunta";
 
 export class UpdateCuestionario {
     constructor(
@@ -7,16 +8,21 @@ export class UpdateCuestionario {
     ) { }
 
     async execute(
-        data: { idInt: number; titulo: string; descripcion: string }
+        data: { 
+            idInt: number; 
+            titulo: string;
+            descripcion: string;
+            preguntas: Omit<PreguntaCreate, "cuestionario_id">[];
+        }
     ): Promise<Cuestionario> {
         const cuestionario = await this.cuestionarioRepository.findById(data.idInt);
         if (!cuestionario) {
             throw new Error("Cuestionario not found");
         }
-        const updatedCuestionario = new Cuestionario(
+        const updatedCuestionario = new CuestionarioCreate(
             data.titulo,
             data.descripcion,
-            cuestionario.id
+            data.preguntas
         );
         return await this.cuestionarioRepository.update(data.idInt, updatedCuestionario);
     }

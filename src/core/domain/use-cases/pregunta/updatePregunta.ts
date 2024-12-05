@@ -11,6 +11,7 @@ export class UpdatePregunta {
         data: { 
             idInt: number; 
             enunciado: string; 
+            orden: number;
             opciones: Opcion[] 
         }
     ): Promise<Pregunta> {
@@ -20,7 +21,8 @@ export class UpdatePregunta {
         }
         const body = {
             enunciado: data.enunciado,
-            opciones: data.opciones
+            opciones: data.opciones,
+            orden: data.orden
         }
         return await this.preguntaRepository.update(data.idInt, body);
     }

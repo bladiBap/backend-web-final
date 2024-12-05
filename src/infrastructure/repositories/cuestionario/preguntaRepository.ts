@@ -8,6 +8,7 @@ export class PreguntaRepositoryImpl implements PreguntaRepository {
             data: {
                 enunciado: pregunta.enunciado,
                 cuestionario_id: pregunta.cuestionario_id,
+                orden: pregunta.orden,
                 opciones: {
                     create: pregunta.opciones
                 }
@@ -26,6 +27,7 @@ export class PreguntaRepositoryImpl implements PreguntaRepository {
             where: { id },
             data: {
                 enunciado: pregunta.enunciado,
+                orden: pregunta.orden,
                 opciones: {
                     deleteMany: {},
                     create: pregunta.opciones
