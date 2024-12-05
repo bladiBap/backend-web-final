@@ -53,6 +53,7 @@ model usuario {
   contrasena String
   rol        rol      @default(USER)
   createdAT  DateTime @default(now())
+  puntaje    Int      @default(0)
   updatedAt  DateTime @updatedAt
 
   usuariomision  usuariomision[]
@@ -171,8 +172,6 @@ model usuariopowerup {
   fk_usuario Int
   fk_powerup Int
   cantidad   Int
-  createdAT  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
 
   usuario usuario @relation(fields: [fk_usuario], references: [id])
   powerup Powerup @relation(fields: [fk_powerup], references: [id])

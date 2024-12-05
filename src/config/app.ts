@@ -76,6 +76,25 @@ app.get('/api/powerup/:id', (req, res) => powerupController.getPowerUpById(req, 
 app.put('/api/powerup/:id', (req, res) => powerupController.updatePowerup(req, res));
 app.delete('/api/powerup/:id', (req, res) => powerupController.deletePowerup(req, res));
 
+// Routes for Usuarios
+app.get("/api/usuario", (req, res) => usuarioController.getAllUsuario(req, res));
+app.post("/api/usuario", (req, res) => usuarioController.createUsuario(req, res));
+app.get("/api/usuario/id/:id", (req, res) => usuarioController.getUsuarioById(req, res));
+app.post("/api/usuario/email", (req, res) => usuarioController.getUserByEmailAddress(req, res));
+app.put("/api/usuario/:id", (req, res) => usuarioController.updateUsuario(req, res));
+app.delete("/api/usuario/:id", (req, res) => usuarioController.deleteUsuario(req, res));
+app.post("/api/usuario/login", (req, res) => usuarioController.login(req, res));
+app.post("/api/usuario/logout", (req, res) => usuarioController.logout(req, res));
+app.get("/api/usuario/me", (req, res) => usuarioController.getUserByToken(req, res));
+app.post("/api/usuario/powerup", (req, res) => usuarioController.assignPowerupToUser(req, res));
+
+// Routes for Logros
+app.get("/api/logro", (req, res) => logroController.getAllLogro(req, res));
+app.post("/api/logro", (req, res) => logroController.createLogro(req, res));
+app.get("/api/logro/:id", (req, res) => logroController.getLogroById(req, res));
+app.put("/api/logro/:id", (req, res) => logroController.updateLogro(req, res));
+app.delete("/api/logro/soft/:id", (req, res) => logroController.deleteSoftLogro(req, res));
+
 
 // Server setup
 app.listen(PORT, () => {

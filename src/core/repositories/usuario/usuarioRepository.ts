@@ -5,6 +5,7 @@ export interface UsuarioRepository {
     update(id: number, usuario: Usuario): Promise<Usuario>;
     findAll(): Promise<Usuario[]>;
     findById(id: number): Promise<Usuario | null>;
-    findByEmail(email: string): Promise<Usuario | null>;
+    findByEmail(correo: string): Promise<Usuario | null>;
     delete(id: number): Promise<void>;
+    assignPowerupToUser(userId: number, powerupId: number, cantidad : number): Promise<void>;
 }

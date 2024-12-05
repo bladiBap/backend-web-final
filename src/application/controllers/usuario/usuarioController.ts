@@ -9,10 +9,13 @@ import { UpdateUsuario } from '../../../core/domain/use-cases/usuario/updateUsua
 import { DeleteUsuario } from '../../../core/domain/use-cases/usuario/deleteUsuario';
 import { GetUsuario } from '../../../core/domain/use-cases/usuario/getUsuario';
 import { GetAllUsuario } from '../../../core/domain/use-cases/usuario/getAllUsuario';
+import { AssignPowerupToUser } from '../../../core/domain/use-cases/usuario/assignPowerupToUser';
+import { PowerUpRepositoryImpl } from '../../../infrastructure/repositories/powerup/powerupRepositoryImpl';
 
 export class UsuarioController {
 
     private usuarioRepository = new UsuarioRepositoryImpl();
+    private powerupRepository = new PowerUpRepositoryImpl();
 
     async getAllUsuario(req: Request, res: Response): Promise<void> {
         const usuarioClass = new GetAllUsuario(this.usuarioRepository);
@@ -100,6 +103,7 @@ export class UsuarioController {
         }
         usuario.contrasena = '';
         const token = generarJWT(usuario);
+        // console.log(token);
         const NodeEnv = process.env.NODE_ENV || 'development';
         const serializedToken = serialize('token', token, {
             httpOnly: true,
@@ -135,5 +139,36 @@ export class UsuarioController {
         const tokenDecoded = validarJWT(token);
         if (!tokenDecoded) return res.status(401).json({ message: 'Unauthorized' });
         res.json(tokenDecoded);
+    }
+
+
+    async assignPowerupToUser(req: Request, res: Response): Promise<void> {
+        const { userId, powerupId, cantidad } = req.body;
+        if (!userId || !powerupId || !cantidad) {
+            res.status(400).json({ message: 'Los campos id, powerupId y cantidad son requeridos.' });
+            return;
+        }
+
+        const powerup = this.powerupRepository.findById(powerupId);
+        if (!powerup) {
+            res.status(404).json({ message: 'Powerup not found' });
+            return;
+        }
+
+        const assignPowerup = new AssignPowerupToUser(this.usuarioRepository);
+        await assignPowerup.execute({ userId, powerupId, cantidad });
+        res.json({ message: 'Powerup assigned to user successfully' });
+    }
+
+    async getUserByEmailAddress(req: Request, res: Response): Promise<any> {
+        const { correo } = req.body;
+        const usuarioClass = new GetUsuario(this.usuarioRepository);
+        const usuario = await usuarioClass.executeByEmail(correo);
+        if (!usuario) {
+            res.status(404).json({ message: 'Usuario not found' });
+            return;
+        }
+        usuario.contrasena = '';
+        res.json(usuario);
     }
 }
