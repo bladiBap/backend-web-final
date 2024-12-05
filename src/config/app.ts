@@ -1,8 +1,11 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 
 import { CuestionarioController } from "../application/controllers/cuestionarios/cuestionarioController";
 import { PreguntaController } from "../application/controllers/cuestionarios/preguntaController";
 import { MisionController } from "../application/controllers/mision/misionController";
+import { UsuarioController } from "../application/controllers/usuario/usuarioController";
+import { LogroController } from "../application/controllers/logro/logroController";
 import { NivelController } from "../application/controllers/nivel/nivelController";
 import { TopicoController } from "../application/controllers/topicos/topicoController";
 import { PowerUpController } from "../application/controllers/powerup/powerupController";
@@ -14,11 +17,17 @@ const PORT = process.env.PORT || 3000;
 
 // Middlewares
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}));
+app.use(cookieParser());
 
 const cuestionarioController = new CuestionarioController();
 const preguntaController = new PreguntaController();
 const misionController = new MisionController();
+const usuarioController = new UsuarioController();
+const logroController = new LogroController();
 
 const nivelController = new NivelController();
 const topicoController = new TopicoController();

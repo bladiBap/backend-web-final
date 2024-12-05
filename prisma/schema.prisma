@@ -49,9 +49,9 @@ model usuario {
 
   nombre     String
   apellido   String
-  correo     String
+  correo     String   @unique
   contrasena String
-  Role       Role     @default(USER)
+  rol        rol      @default(USER)
   createdAT  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -62,7 +62,7 @@ model usuario {
   Cuestionario   Cuestionario[]
 }
 
-enum Role {
+enum rol {
   USER
   ADMIN
 }
