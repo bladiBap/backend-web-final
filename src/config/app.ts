@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import morgan from "morgan";
 
 import { CuestionarioController } from "../application/controllers/cuestionarios/cuestionarioController";
 import { PreguntaController } from "../application/controllers/cuestionarios/preguntaController";
@@ -22,6 +23,7 @@ app.use(cors({
   credentials: true,
 }));
 app.use(cookieParser());
+app.use(morgan("dev"));
 
 const cuestionarioController = new CuestionarioController();
 const preguntaController = new PreguntaController();

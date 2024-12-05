@@ -9,9 +9,9 @@ export class LogroRepositoryImpl implements LogroRepository {
             data: {
                 nombre: logro.nombre,
                 descripcion: logro.descripcion,
-                objetivo: logro.objetivo,
+                objetivo: parseInt(logro.objetivo.toString()),
                 por_puntos: logro.por_puntos,
-                recompensa: logro.recompensa
+                recompensa: parseInt(logro.recompensa.toString())
             }
         });
         return newLogro;
