@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3000;
 // Middlewares
 app.use(express.json());
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "http://localhost:3001",
   credentials: true,
 }));
 app.use(cookieParser());
@@ -112,6 +112,6 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-console.log("Server on port", process.env.PORT || 4000);
+console.log("Server on port", process.env.PORT || 4001);
 
 export default app;

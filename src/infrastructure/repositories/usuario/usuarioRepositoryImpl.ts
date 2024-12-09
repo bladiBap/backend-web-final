@@ -145,6 +145,11 @@ export class UsuarioRepositoryImpl implements UsuarioRepository {
                 nivel: true,
                 puntaje: true,
                 usuariopowerup: {
+                    where: {
+                        cantidad: {
+                            gt: 0
+                        }
+                    },
                     select: {
                         cantidad: true,
                         powerup: {
@@ -253,10 +258,16 @@ export class UsuarioRepositoryImpl implements UsuarioRepository {
     }
 
     async updatePuntaje(userId: number, puntaje: number): Promise<void> {
+        const user = await db.usuario.findUnique({
+            where: { id: userId }
+        });
+        if (!user) {
+            throw new Error('Usuario no encontrado');
+        }
         await db.usuario.update({
             where: { id: userId },
             data: {
-                puntaje
+                puntaje: user.puntaje + puntaje
             }
         });
     }
